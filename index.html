@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Digital Ticket · Tazaungdaing Festival</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #faf3ec;
+        --bg-2: #f3e4d7;
+        --panel: #ffffff;
+        --panel-2: #fff8f1;
+        --ink: #2b140d;
+        --ink-soft: #6d4a3a;
+        --ink-faint: #9a7562;
+        --line: #e8d3c2;
+        --accent: #c33d0f;
+        --accent-deep: #7e1d06;
+        --accent-soft: #fbe9dd;
+        --gold: #e9a13b;
+        --good: #1c7c46;
+        --good-soft: #e2f4e9;
+        --bad: #b3261e;
+        --bad-soft: #fbe7e5;
+        --shadow: 0 24px 60px rgba(94, 32, 8, 0.18);
+        --ticket-shadow: 0 34px 70px rgba(60, 10, 0, 0.45), 0 8px 22px rgba(60, 10, 0, 0.35);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #170b08;
+          --bg-2: #201009;
+          --panel: #2a1610;
+          --panel-2: #311a12;
+          --ink: #fbeee3;
+          --ink-soft: #d9b6a2;
+          --ink-faint: #a97f68;
+          --line: #4a2a1d;
+          --accent: #ff7a3d;
+          --accent-deep: #ffb287;
+          --accent-soft: #42200f;
+          --good-soft: #143325;
+          --bad-soft: #3d1714;
+          --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+          --ticket-shadow: 0 34px 70px rgba(0, 0, 0, 0.65), 0 8px 22px rgba(0, 0, 0, 0.5);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: "Archivo", system-ui, sans-serif;
+        background:
+          radial-gradient(1100px 520px at 85% -10%, rgba(233, 161, 59, 0.20), transparent 60%),
+          radial-gradient(900px 480px at -10% 30%, rgba(195, 61, 15, 0.14), transparent 55%),
+          linear-gradient(180deg, var(--bg), var(--bg-2));
+        color: var(--ink);
+        min-height: 100vh;
+      }
+      .wrap { max-width: 1180px; margin: 0 auto; padding: 20px 18px 56px; }
+
+      /* ---------- Top strip ---------- */
+      .topstrip {
+        display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;
+        padding: 6px 2px 18px;
+      }
+      .event-chip {
+        display: inline-flex; align-items: center; gap: 10px;
+        font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+      }
+      .event-chip .dot {
+        width: 10px; height: 10px; border-radius: 50%;
+        background: var(--gold); box-shadow: 0 0 0 4px rgba(233, 161, 59, 0.25);
+      }
+      .topstrip nav { display: flex; gap: 8px; flex-wrap: wrap; }
+      .topstrip nav a {
+        color: var(--ink-soft); text-decoration: none; font-size: 13px; font-weight: 600;
+        border: 1px solid var(--line); background: var(--panel);
+        padding: 8px 14px; border-radius: 999px;
+      }
+      .topstrip nav a:hover { color: var(--accent); border-color: var(--accent); }
+
+      /* ---------- Hero line ---------- */
+      .hero { padding: 4px 2px 22px; max-width: 760px; }
+      .hero h1 {
+        font-family: "Anton", "Archivo", sans-serif;
+        font-size: clamp(34px, 6vw, 58px);
+        line-height: 0.98; letter-spacing: 0.01em;
+        margin: 0 0 12px; text-transform: uppercase; font-weight: 400;
+      }
+      .hero h1 .warm { color: var(--accent); }
+      .hero p { margin: 0; font-size: 16px; line-height: 1.55; color: var(--ink-soft); max-width: 620px; }
+      .hero .facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+      .fact {
+        font-size: 13px; font-weight: 700; background: var(--panel); border: 1px solid var(--line);
+        padding: 8px 13px; border-radius: 10px;
+      }
+      .fact span { color: var(--ink-faint); font-weight: 600; margin-right: 6px; }
+
+      /* ---------- Layout ---------- */
+      .layout { display: grid; grid-template-columns: 380px 1fr; gap: 26px; align-items: start; }
+      @media (max-width: 920px) { .layout { grid-template-columns: 1fr; } }
+
+      .card {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
+        box-shadow: var(--shadow);
+      }
+      .card-pad { padding: 22px; }
+      .card h2 { margin: 0 0 4px; font-size: 19px; letter-spacing: -0.01em; }
+      .card .sub { margin: 0 0 18px; font-size: 13.5px; color: var(--ink-soft); line-height: 1.5; }
+
+      /* ---------- Form ---------- */
+      label.f-label { display: block; font-size: 12.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 7px; }
+      .field { margin-bottom: 16px; }
+      input[type="text"], input[type="tel"], select {
+        width: 100%; padding: 13px 14px; font: inherit; font-size: 15.5px;
+        color: var(--ink); background: var(--panel-2);
+        border: 1.5px solid var(--line); border-radius: 12px; outline: none;
+      }
+      input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(195, 61, 15, 0.16); }
+      .qty-row { display: flex; align-items: center; gap: 10px; }
+      .qty-btn {
+        width: 42px; height: 42px; border-radius: 12px; border: 1.5px solid var(--line);
+        background: var(--panel-2); color: var(--ink); font-size: 20px; font-weight: 700; cursor: pointer; line-height: 1;
+      }
+      .qty-btn:hover { border-color: var(--accent); color: var(--accent); }
+      .qty-val { min-width: 30px; text-align: center; font-size: 18px; font-weight: 800; }
+      .price-line {
+        display: flex; justify-content: space-between; align-items: baseline;
+        border-top: 1px dashed var(--line); padding-top: 14px; margin-top: 2px;
+        font-size: 14px; color: var(--ink-soft);
+      }
+      .price-line strong { font-size: 21px; color: var(--ink); letter-spacing: -0.01em; }
+      .btn {
+        appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 700;
+        border-radius: 12px; padding: 13px 18px; font-size: 15px;
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+      }
+      .btn:active { transform: scale(0.98); }
+      .btn-primary { background: linear-gradient(135deg, #e04e12, #a82a05); color: #fff; width: 100%; box-shadow: 0 10px 24px rgba(195, 61, 15, 0.32); }
+      .btn-primary:hover { background: linear-gradient(135deg, #ec5a1d, #b93208); }
+      .btn-ghost { background: var(--panel); color: var(--ink); border: 1.5px solid var(--line); }
+      .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+      .btn-small { padding: 9px 14px; font-size: 13.5px; border-radius: 10px; }
+      .form-note { font-size: 12.5px; color: var(--ink-faint); line-height: 1.5; margin: 12px 0 0; }
+      .form-error { display: none; font-size: 13.5px; font-weight: 600; color: var(--bad); background: var(--bad-soft); border-radius: 10px; padding: 10px 12px; margin-bottom: 14px; }
+      .form-error.show { display: block; }
+
+      /* ---------- Issued list ---------- */
+      .issued { margin-top: 18px; display: none; }
+      .issued.show { display: block; }
+      .issued h3 { font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 6px; }
+      .saved-note { font-size: 12.5px; color: var(--ink-faint); line-height: 1.5; margin: 0 0 10px; }
+      .saved-note strong { color: var(--good); }
+      .clear-saved { margin-top: 10px; }
+      .issued-list { display: flex; flex-direction: column; gap: 8px; }
+      .issued-item {
+        display: flex; align-items: center; gap: 10px; text-align: left; width: 100%;
+        background: var(--panel-2); border: 1.5px solid var(--line); border-radius: 12px;
+        padding: 11px 13px; cursor: pointer; font: inherit;
+      }
+      .issued-item.active { border-color: var(--accent); background: var(--accent-soft); }
+      .issued-item .tid { font-weight: 800; font-size: 14px; letter-spacing: 0.02em; color: var(--ink); }
+      .issued-item .tname { font-size: 12.5px; color: var(--ink-soft); }
+      .pill {
+        margin-left: auto; font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em;
+        padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+      }
+      .pill-valid { background: var(--good-soft); color: var(--good); }
+      .pill-used { background: var(--bad-soft); color: var(--bad); }
+
+      /* ---------- 3D stage ---------- */
+      .stage-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+      .stage-head .hint { font-size: 13px; color: var(--ink-faint); font-weight: 600; }
+      .stage {
+        perspective: 1400px;
+        -webkit-perspective: 1400px;
+        padding: 30px 10px 26px;
+        border-radius: 18px;
+        background:
+          radial-gradient(600px 260px at 50% 0%, rgba(233, 161, 59, 0.16), transparent 65%),
+          var(--panel-2);
+        border: 1px solid var(--line);
+        overflow: visible;
+      }
+      /* Tilt lives ONLY on this outer wrapper. It stays flat on purpose:
+         a second preserve-3d layer here makes iOS Safari flatten the flip
+         below it, which is what left both faces showing, mirrored. */
+      .tilt {
+        will-change: transform;
+        max-width: 760px; margin: 0 auto;
+      }
+      /* Flip lives ONLY on this inner element. JS never writes a transform
+         to it, so the tilt can never overwrite the flip angle. */
+      .flip {
+        position: relative;
+        transform-style: preserve-3d;
+        -webkit-transform-style: preserve-3d;
+        transition: transform 0.85s cubic-bezier(0.2, 0.75, 0.25, 1);
+        aspect-ratio: 16 / 8.8;
+      }
+      .flip.flipped { transform: rotateY(180deg); -webkit-transform: rotateY(180deg); }
+      @media (max-width: 560px) { .flip { aspect-ratio: 16 / 12; } }
+      .face {
+        position: absolute; inset: 0;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        border-radius: 16px; overflow: hidden;
+        box-shadow: var(--ticket-shadow);
+        background: linear-gradient(115deg, #3d0803 0%, #6d1503 34%, #a02c07 68%, #c33d0f 100%);
+        color: #fff;
+      }
+      /* Each face gets its own explicit transform and backface rule.
+         translateZ lifts the faces off the same plane so Safari culls the
+         hidden one instead of painting it through, mirrored. */
+      .face-front {
+        transform: rotateY(0deg) translateZ(1px);
+        -webkit-transform: rotateY(0deg) translateZ(1px);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        z-index: 2;
+        visibility: visible;
+      }
+      .face-back {
+        transform: rotateY(180deg) translateZ(1px);
+        -webkit-transform: rotateY(180deg) translateZ(1px);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        background: linear-gradient(115deg, #2e0502 0%, #5c1103 40%, #8f2506 75%, #b23308 100%);
+        z-index: 1;
+        visibility: hidden;
+      }
+      /* Safety net for Safari backface bugs: at rest only one face is
+         visible at all. The swap is delayed to the middle of the turn
+         (0.42s of the 0.85s flip) so the animation still reads as a flip. */
+      .flip.flipped .face-front { visibility: hidden; transition: visibility 0s linear 0.42s; }
+      .flip.flipped .face-back { visibility: visible; transition: visibility 0s linear 0.42s; }
+      .flip:not(.flipped) .face-front { visibility: visible; transition: visibility 0s linear 0.42s; }
+      .flip:not(.flipped) .face-back { visibility: hidden; transition: visibility 0s linear 0.42s; }
+      .glare {
+        position: absolute; inset: 0; z-index: 6; pointer-events: none;
+        background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 225, 170, 0.28), transparent 55%);
+        opacity: var(--go, 0); transition: opacity 0.25s ease;
+      }
+      /* lanterns */
+      .lantern { position: absolute; pointer-events: none; opacity: 0.9; animation: drift 7s ease-in-out infinite; }
+      @keyframes drift { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-9px) rotate(2.5deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        .lantern { animation: none; }
+        .flip { transition: none; }
+        .flip .face-front, .flip .face-back { transition: visibility 0s linear 0s; }
+        html { scroll-behavior: auto; }
+      }
+      .face-inner { position: relative; z-index: 3; height: 100%; display: flex; flex-direction: column; padding: 4.2% 6% 4%; }
+      .f-title {
+        font-family: "Anton", sans-serif; font-weight: 400;
+        font-size: clamp(20px, 4.6vw, 40px); line-height: 0.95; letter-spacing: 0.005em;
+        text-transform: uppercase; margin: 0;
+        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+      }
+      .f-title small {
+        display: block; font-family: "Archivo", sans-serif; font-weight: 500;
+        font-size: clamp(10px, 1.7vw, 15px); letter-spacing: 0.02em; text-transform: none;
+        text-align: right; margin-top: 2px; color: #ffd9a8;
+      }
+      .f-mid { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-top: 2.4%; }
+      .f-date { display: flex; gap: 10px; align-items: flex-start; }
+      .f-date .day { font-family: "Anton", sans-serif; font-size: clamp(26px, 5vw, 46px); line-height: 0.9; }
+      .f-date .my { font-size: clamp(10px, 1.6vw, 14px); font-weight: 600; line-height: 1.25; letter-spacing: 0.06em; }
+      .f-time { text-align: right; font-size: clamp(10px, 1.7vw, 14.5px); font-weight: 600; letter-spacing: 0.05em; line-height: 1.5; color: #ffe3c2; }
+      .f-bottom { margin-top: auto; }
+      .f-venue { font-family: "Anton", sans-serif; font-size: clamp(13px, 2.6vw, 24px); letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.05; }
+      .f-addr { font-size: clamp(9px, 1.5vw, 13px); font-style: italic; letter-spacing: 0.05em; color: #ffd9a8; margin-top: 3px; text-transform: uppercase; }
+      .f-holder {
+        display: flex; justify-content: space-between; align-items: flex-end; gap: 14px;
+        border-top: 1px solid rgba(255, 217, 168, 0.35); padding-top: 2.4%; margin-top: 2.6%;
+      }
+      .holder-label { font-size: clamp(8px, 1.3vw, 10.5px); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #ffb287; }
+      .holder-name { font-size: clamp(13px, 2.3vw, 19px); font-weight: 800; letter-spacing: 0.01em; margin-top: 2px; }
+      .holder-id { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: clamp(10px, 1.7vw, 14px); font-weight: 700; letter-spacing: 0.06em; color: #ffe3c2; margin-top: 2px; }
+      .sig { text-align: right; }
+      .sig .sig-name { font-family: "Caveat", cursive; font-size: clamp(19px, 3.4vw, 31px); line-height: 1; color: #fff; transform: rotate(-3deg); display: inline-block; }
+      .sig .sig-line { border-top: 1px solid rgba(255, 255, 255, 0.55); margin-top: 2px; padding-top: 3px; font-size: clamp(8px, 1.3vw, 10.5px); letter-spacing: 0.14em; text-transform: uppercase; color: #ffb287; font-weight: 700; }
+      /* perforation stub on front */
+      .stub-divider {
+        position: absolute; top: 0; bottom: 0; right: 21.5%; width: 0; z-index: 4;
+        border-left: 2px dashed rgba(255, 227, 194, 0.5);
+      }
+      .stub-divider::before, .stub-divider::after {
+        content: ""; position: absolute; left: -9px; width: 16px; height: 16px; border-radius: 50%;
+        background: var(--panel-2);
+      }
+      .stub-divider::before { top: -8px; } .stub-divider::after { bottom: -8px; }
+      .face-front .face-inner { padding-right: 25.5%; }
+      .stub {
+        position: absolute; top: 0; right: 0; bottom: 0; width: 21.5%; z-index: 3;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+        padding: 10px 6px; text-align: center;
+      }
+      .stub .admit { font-family: "Anton", sans-serif; font-size: clamp(11px, 2vw, 18px); letter-spacing: 0.22em; writing-mode: vertical-rl; color: #ffe3c2; }
+      .stub .stub-id { font-family: ui-monospace, Menlo, monospace; font-size: clamp(8.5px, 1.35vw, 11.5px); font-weight: 700; letter-spacing: 0.04em; word-break: break-all; color: #fff; }
+      .stub .stub-price { font-size: clamp(9px, 1.4vw, 12px); font-weight: 700; color: #ffd9a8; }
+      /* redeemed stamp */
+      .stamp {
+        position: absolute; z-index: 7; top: 50%; left: 46%; transform: translate(-50%, -50%) rotate(-13deg);
+        font-family: "Anton", sans-serif; font-size: clamp(22px, 4.6vw, 42px); letter-spacing: 0.12em;
+        color: #ffd9d4; border: 3.5px solid #ff8d7e; border-radius: 10px; padding: 4px 18px 7px;
+        background: rgba(120, 10, 0, 0.35); text-transform: uppercase; display: none; pointer-events: none;
+      }
+      .stamp.show { display: block; }
+      /* back face */
+      .back-grid { position: relative; z-index: 3; height: 100%; display: grid; grid-template-columns: 1fr auto; gap: 4%; padding: 5% 5.5%; align-items: center; }
+      .b-title { font-family: "Anton", sans-serif; font-size: clamp(14px, 2.6vw, 25px); text-transform: uppercase; line-height: 1.05; margin: 0 0 4%; }
+      .b-row { font-size: clamp(10px, 1.7vw, 14.5px); line-height: 1.55; color: #ffe3c2; }
+      .b-row strong { color: #fff; }
+      .b-id { font-family: ui-monospace, Menlo, monospace; font-weight: 700; letter-spacing: 0.05em; color: #fff; }
+      .b-sig { margin-top: 4%; }
+      .b-sig .sig-name { font-family: "Caveat", cursive; font-size: clamp(20px, 3.6vw, 33px); line-height: 1; transform: rotate(-3deg); display: inline-block; }
+      .b-sig .sig-line { border-top: 1px solid rgba(255, 255, 255, 0.55); max-width: 230px; margin-top: 3px; padding-top: 3px; font-size: clamp(8px, 1.3vw, 10.5px); letter-spacing: 0.14em; text-transform: uppercase; color: #ffb287; font-weight: 700; }
+      .b-terms { margin-top: 4%; font-size: clamp(8.5px, 1.35vw, 11px); color: #ffb287; text-decoration: underline; text-underline-offset: 2px; }
+      .b-arrange { margin-top: 2.5%; font-size: clamp(9px, 1.5vw, 12.5px); font-weight: 700; color: #ffe3c2; }
+      .qr-box { background: #fff; border-radius: 12px; padding: 10px; text-align: center; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35); }
+      .qr-box .qr-holder { width: clamp(104px, 19vw, 168px); height: clamp(104px, 19vw, 168px); display: grid; place-items: center; }
+      .qr-box .qr-holder svg { width: 100% !important; height: 100% !important; }
+      .qr-box .qr-placeholder { font-size: 11.5px; font-weight: 700; color: #8a5a44; line-height: 1.45; padding: 8px; }
+      .qr-box .qr-cap { font-size: clamp(8.5px, 1.4vw, 11px); font-weight: 800; letter-spacing: 0.08em; color: #7e1d06; text-transform: uppercase; margin-top: 7px; }
+      .qr-box .qr-id { font-family: ui-monospace, Menlo, monospace; font-size: clamp(8.5px, 1.35vw, 11.5px); font-weight: 700; color: #4a240f; margin-top: 2px; word-break: break-all; }
+
+      /* stage controls */
+      .stage-controls { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+      .ticket-meta {
+        display: none; margin-top: 16px; border: 1px solid var(--line); background: var(--panel);
+        border-radius: 14px; padding: 15px 17px;
+      }
+      .ticket-meta.show { display: block; }
+      .ticket-meta .tm-row { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; padding: 5px 0; }
+      .ticket-meta .tm-row + .tm-row { border-top: 1px dashed var(--line); }
+      .ticket-meta .k { color: var(--ink-faint); font-weight: 700; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; min-width: 104px; padding-top: 2px; }
+      .ticket-meta .v { font-weight: 600; }
+      .ticket-meta .v.mono { font-family: ui-monospace, Menlo, monospace; letter-spacing: 0.03em; }
+      .success-banner {
+        display: none; margin-top: 16px; background: var(--good-soft); color: var(--good);
+        border-radius: 12px; padding: 13px 16px; font-size: 14.5px; font-weight: 600; line-height: 1.5;
+      }
+      .success-banner.show { display: block; }
+
+      /* ---------- Lower sections ---------- */
+      .lower { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 26px; align-items: start; }
+      @media (max-width: 920px) { .lower { grid-template-columns: 1fr; } }
+      .steps { display: flex; flex-direction: column; gap: 15px; margin: 0; padding: 0; list-style: none; counter-reset: step; }
+      .steps li { display: flex; gap: 13px; }
+      .steps .n {
+        counter-increment: step; flex: 0 0 30px; width: 30px; height: 30px; border-radius: 50%;
+        background: var(--accent-soft); color: var(--accent); font-weight: 800; font-size: 14px;
+        display: grid; place-items: center; margin-top: 1px;
+      }
+      .steps .n::before { content: counter(step); }
+      .steps h3 { margin: 0 0 3px; font-size: 15px; }
+      .steps p { margin: 0; font-size: 13.5px; color: var(--ink-soft); line-height: 1.55; }
+      .verify-result { display: none; border-radius: 12px; padding: 14px 16px; font-size: 14.5px; line-height: 1.55; margin-top: 14px; }
+      .verify-result.show { display: block; }
+      .verify-result.ok { background: var(--good-soft); color: var(--good); }
+      .verify-result.bad { background: var(--bad-soft); color: var(--bad); }
+      .verify-result strong { display: block; font-size: 16px; margin-bottom: 2px; }
+      .scan-area { display: none; margin-top: 14px; }
+      .scan-area.show { display: block; }
+      .scan-frame { position: relative; border-radius: 14px; overflow: hidden; background: #120806; aspect-ratio: 4 / 3; }
+      .scan-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .scan-frame .reticle {
+        position: absolute; inset: 16% 22%; border: 3px solid rgba(255, 217, 168, 0.9); border-radius: 14px;
+        box-shadow: 0 0 0 999px rgba(10, 3, 1, 0.45); pointer-events: none;
+      }
+      .scan-status { font-size: 13px; color: var(--ink-soft); margin-top: 9px; font-weight: 600; }
+      .verify-row { display: flex; gap: 9px; flex-wrap: wrap; }
+      .verify-row input { flex: 1 1 180px; }
+      footer { margin-top: 34px; text-align: center; font-size: 12.5px; color: var(--ink-faint); line-height: 1.6; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topstrip">
+        <div class="event-chip"><span class="dot"></span> NMA COLLEGE · PLATINUM CAMPUS · YANGON</div>
+        <nav>
+          <a href="#buy">Get a ticket</a>
+          <a href="#counter">Event counter</a>
+        </nav>
+      </div>
+
+      <div class="hero">
+        <h1>Tazaungdaing Festival <span class="warm">Digital Ticket</span></h1>
+        <p>Buy a ticket and it is issued on the spot with its own unique Ticket ID and QR code, signed in the buyer name. At the event, the counter scans the QR and the ticket is redeemed for entry.</p>
+        <div class="facts">
+          <div class="fact"><span>DATE</span>Thu · 26 Nov 2026</div>
+          <div class="fact"><span>TIME</span>10:30 AM to 1:30 PM</div>
+          <div class="fact"><span>PRICE</span>10,000 MMK</div>
+          <div class="fact"><span>VENUE</span>NMA College Platinum Campus</div>
+        </div>
+      </div>
+
+      <div class="layout">
+        <!-- ===== Buy / issue ===== -->
+        <section class="card card-pad" id="buy">
+          <h2>Get your ticket</h2>
+          <p class="sub">Enter the buyer name exactly as it should appear on the ticket. Each ticket gets a different ID and QR, even for the same buyer.</p>
+          <div class="form-error" id="formError" role="alert"></div>
+          <form id="buyForm" novalidate>
+            <div class="field">
+              <label class="f-label" for="buyerName">Buyer full name</label>
+              <input type="text" id="buyerName" placeholder="e.g. Thit Sar" autocomplete="name" maxlength="40" />
+            </div>
+            <div class="field">
+              <label class="f-label" for="buyerPhone">Phone (optional, printed on ticket back)</label>
+              <input type="tel" id="buyerPhone" placeholder="09 XXX XXX XXX" autocomplete="tel" maxlength="20" />
+            </div>
+            <div class="field">
+              <label class="f-label">Number of tickets</label>
+              <div class="qty-row">
+                <button type="button" class="qty-btn" id="qtyMinus" aria-label="One fewer ticket">−</button>
+                <div class="qty-val" id="qtyVal">1</div>
+                <button type="button" class="qty-btn" id="qtyPlus" aria-label="One more ticket">+</button>
+                <span style="font-size:13px;color:var(--ink-faint);font-weight:600;">Max 4 per buyer</span>
+              </div>
+            </div>
+            <div class="price-line"><span>Total to pay at sale point</span><strong id="priceTotal">10,000 MMK</strong></div>
+            <div style="height:14px"></div>
+            <button type="submit" class="btn btn-primary">Issue my ticket</button>
+            <p class="form-note">Payment is taken at the Platinum Campus sale point or by KBZPay as announced by the organizers. This page issues the signed digital ticket with its ID and QR once the buyer name is confirmed. Issued tickets are saved on this device and stay here until the event, even if you close this tab.</p>
+          </form>
+
+          <div class="issued" id="issuedBox">
+            <h3>Your issued tickets</h3>
+            <p class="saved-note" id="savedNote"><strong>Saved on this device.</strong> These tickets stay here until the event on Thu, 26 Nov 2026. Close this tab and reopen the page on this same device and browser, and they will be restored for the event counter, with redeemed tickets still marked redeemed.</p>
+            <div class="issued-list" id="issuedList"></div>
+            <button type="button" class="btn btn-ghost btn-small clear-saved" id="clearSavedBtn">Clear saved tickets on this device</button>
+          </div>
+        </section>
+
+        <!-- ===== 3D ticket stage ===== -->
+        <section>
+          <div class="stage-head">
+            <span class="hint">Move your pointer or finger over the ticket to tilt it in 3D.</span>
+            <button type="button" class="btn btn-ghost btn-small" id="flipBtnTop">Flip ticket</button>
+          </div>
+          <div class="stage" id="stage">
+            <div class="tilt" id="tilt">
+              <div class="flip" id="flip">
+                <!-- FRONT -->
+                <div class="face face-front" aria-label="Ticket front">
+                  <svg class="lantern" style="top:-14px;left:4%;width:44px" viewBox="0 0 60 74" aria-hidden="true"><path d="M14 8 Q30 0 46 8 L50 52 Q30 66 10 52 Z" fill="#e0651f"/><ellipse cx="30" cy="56" rx="7" ry="4" fill="#ffd9a8"/></svg>
+                  <svg class="lantern" style="top:8%;right:27%;width:30px;animation-delay:-2s" viewBox="0 0 60 74" aria-hidden="true"><path d="M14 8 Q30 0 46 8 L50 52 Q30 66 10 52 Z" fill="#c94f14"/><ellipse cx="30" cy="56" rx="7" ry="4" fill="#ffd9a8"/></svg>
+                  <svg class="lantern" style="bottom:-10px;left:38%;width:52px;animation-delay:-4s" viewBox="0 0 60 74" aria-hidden="true"><path d="M14 8 Q30 0 46 8 L50 52 Q30 66 10 52 Z" fill="#d95718"/><ellipse cx="30" cy="56" rx="7" ry="4" fill="#ffe3c2"/></svg>
+                  <svg class="lantern" style="bottom:6%;left:6%;width:26px;animation-delay:-1s" viewBox="0 0 60 74" aria-hidden="true"><path d="M14 8 Q30 0 46 8 L50 52 Q30 66 10 52 Z" fill="#e0651f"/><ellipse cx="30" cy="56" rx="7" ry="4" fill="#ffd9a8"/></svg>
+                  <div class="face-inner">
+                    <h2 class="f-title">Tazaungdaing Festival<small>by NMA College</small></h2>
+                    <div class="f-mid">
+                      <div class="f-date">
+                        <div class="day">26</div>
+                        <div class="my">NOV<br />2026</div>
+                      </div>
+                      <div class="f-time">START AT 10:30 AM<br />UNTIL 1:30 PM</div>
+                    </div>
+                    <div class="f-bottom">
+                      <div class="f-venue">NMA College Platinum Campus</div>
+                      <div class="f-addr">10 Aung Myay Thar Si Street, Kamayut Township, Yangon</div>
+                      <div class="f-holder">
+                        <div>
+                          <div class="holder-label">Ticket holder</div>
+                          <div class="holder-name" id="frontName">Guest Name</div>
+                          <div class="holder-id" id="frontId">Ticket ID issued on purchase</div>
+                        </div>
+                        <div class="sig">
+                          <span class="sig-name" id="frontSig">Guest</span>
+                          <div class="sig-line">Signed · Buyer</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="stub-divider"></div>
+                  <div class="stub">
+                    <div class="admit">ADMIT ONE</div>
+                    <div class="stub-id" id="stubId">NO. PENDING</div>
+                    <div class="stub-price">10,000 MMK</div>
+                  </div>
+                  <div class="stamp" id="stampFront">Redeemed</div>
+                  <div class="glare"></div>
+                </div>
+                <!-- BACK -->
+                <div class="face face-back" aria-label="Ticket back">
+                  <svg class="lantern" style="top:-8px;right:6%;width:38px;animation-delay:-3s" viewBox="0 0 60 74" aria-hidden="true"><path d="M14 8 Q30 0 46 8 L50 52 Q30 66 10 52 Z" fill="#e0651f"/><ellipse cx="30" cy="56" rx="7" ry="4" fill="#ffd9a8"/></svg>
+                  <svg class="lantern" style="bottom:-12px;left:44%;width:48px;animation-delay:-5s" viewBox="0 0 60 74" aria-hidden="true"><path d="M14 8 Q30 0 46 8 L50 52 Q30 66 10 52 Z" fill="#c94f14"/><ellipse cx="30" cy="56" rx="7" ry="4" fill="#ffd9a8"/></svg>
+                  <div class="back-grid">
+                    <div>
+                      <h2 class="b-title">Scan at the event counter to redeem</h2>
+                      <div class="b-row">Ticket ID · <span class="b-id" id="backId">Issued on purchase</span></div>
+                      <div class="b-row">Holder · <strong id="backName">Guest Name</strong><span id="backPhone"></span></div>
+                      <div class="b-row">Event · Tazaungdaing Festival, 26 Nov 2026, 10:30 AM</div>
+                      <div class="b-sig">
+                        <span class="sig-name" id="backSig">Guest</span>
+                        <div class="sig-line">Buyer signature</div>
+                      </div>
+                      <div class="b-terms">T&amp;Cs applied. Discount or refund of ticket will not be available.</div>
+                      <div class="b-arrange">Arranged by BBA Year-1 Batch-24</div>
+                    </div>
+                    <div class="qr-box">
+                      <div class="qr-holder" id="qrHolder">
+                        <div class="qr-placeholder">Your personal QR appears here once the ticket is issued</div>
+                      </div>
+                      <div class="qr-cap">Scan to redeem</div>
+                      <div class="qr-id" id="qrIdCap">NO. PENDING</div>
+                    </div>
+                  </div>
+                  <div class="stamp" id="stampBack" style="left:32%">Redeemed</div>
+                  <div class="glare"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stage-controls">
+            <button type="button" class="btn btn-ghost btn-small" id="flipBtn">Flip to QR side</button>
+            <button type="button" class="btn btn-ghost btn-small" id="copyIdBtn">Copy Ticket ID</button>
+            <button type="button" class="btn btn-ghost btn-small" id="copyDetailsBtn">Copy ticket details</button>
+          </div>
+
+          <div class="success-banner" id="successBanner"></div>
+
+          <div class="ticket-meta" id="ticketMeta">
+            <div class="tm-row"><span class="k">Ticket ID</span><span class="v mono" id="metaId"></span></div>
+            <div class="tm-row"><span class="k">Signed to</span><span class="v" id="metaName"></span></div>
+            <div class="tm-row"><span class="k">Status</span><span class="v" id="metaStatus"></span></div>
+            <div class="tm-row"><span class="k">QR holds</span><span class="v">Ticket ID, buyer name and event, so the counter scan can check and redeem it.</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="lower">
+        <!-- ===== How it works ===== -->
+        <section class="card card-pad">
+          <h2>How redemption works</h2>
+          <p class="sub">One ticket, one ID, one scan. The QR and the printed ID always match.</p>
+          <ol class="steps">
+            <li><span class="n"></span><div><h3>Buy and get issued</h3><p>The buyer name goes on the ticket, a unique Ticket ID is generated, and a QR code is created from that ID and name. No two tickets share an ID.</p></div></li>
+            <li><span class="n"></span><div><h3>Show the ticket at the counter</h3><p>Issued tickets are saved on this device until the event, so closing the tab does not lose them. Reopen this page on the same device, flip the ticket to the QR side, and let the counter scan it. The buyer can also read out the Ticket ID printed on both sides.</p></div></li>
+            <li><span class="n"></span><div><h3>Counter scans and redeems</h3><p>The counter checks the scan in the panel on this page. A valid ticket is marked redeemed and stamped, and a second scan of the same ticket is rejected, so one ticket admits one person, once.</p></div></li>
+          </ol>
+        </section>
+
+        <!-- ===== Counter ===== -->
+        <section class="card card-pad" id="counter">
+          <h2>Event counter · Check and redeem</h2>
+          <p class="sub">For counter staff. Scan the buyer QR with the camera, or type the Ticket ID printed on the ticket, then redeem it. Tickets issued on this device are saved on this device until the event, so they can still be checked and redeemed here after this tab has been closed and reopened.</p>
+          <div class="verify-row">
+            <input type="text" id="verifyInput" placeholder="Ticket ID, e.g. NMA-TZF26-8KQ42D" autocomplete="off" />
+            <button type="button" class="btn btn-ghost" id="checkBtn">Check</button>
+            <button type="button" class="btn btn-primary" id="redeemBtn" style="width:auto">Redeem</button>
+          </div>
+          <div style="height:10px"></div>
+          <button type="button" class="btn btn-ghost btn-small" id="scanBtn">Scan QR with camera</button>
+          <div class="scan-area" id="scanArea">
+            <div class="scan-frame">
+              <video id="scanVideo" playsinline muted></video>
+              <div class="reticle"></div>
+            </div>
+            <div class="scan-status" id="scanStatus">Point the camera at the ticket QR.</div>
+            <div style="height:8px"></div>
+            <button type="button" class="btn btn-ghost btn-small" id="stopScanBtn">Stop camera</button>
+          </div>
+          <div class="verify-result" id="verifyResult" role="status"></div>
+        </section>
+      </div>
+
+      <footer>
+        Tazaungdaing Festival · NMA College Platinum Campus · 10 Aung Myay Thar Si Street, Kamayut Township, Yangon<br />
+        Arranged by BBA Year-1 Batch-24 · T&amp;Cs applied. Discount or refund of ticket will not be available.
+      </footer>
+    </div>
+
+    <canvas id="scanCanvas" style="display:none"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <script>
+      (function () {
+        "use strict";
+        var EVENT = {
+          name: "TAZAUNGDAING FESTIVAL",
+          date: "2026-11-26",
+          dateLabel: "26 Nov 2026",
+          timeLabel: "10:30 AM to 1:30 PM",
+          venue: "NMA College Platinum Campus",
+          price: 10000
+        };
+        var STORAGE_KEY = "nma-tzf26-tickets-v1";
+        var EVENT_END_MS = new Date("2026-11-26T13:30:00+06:30").getTime();
+        var tickets = {};        // id -> ticket record, saved on this device
+        var order = [];          // ids in issue order
+        var currentId = null;
+        var qty = 1;
+        var storageOK = true;
+
+        function saveTickets() {
+          try {
+            var payload = { v: 1, savedAt: new Date().toISOString(), keepUntil: EVENT_END_MS, order: order.slice(), tickets: tickets };
+            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+            storageOK = true;
+          } catch (e) {
+            storageOK = false;
+            var note = document.getElementById("savedNote");
+            if (note) note.innerHTML = "<strong>Could not save on this device.</strong> This browser is blocking saved tickets, for example in a private tab. Keep this tab open until the event counter, or use a normal tab on this device so tickets stay saved until the event.";
+          }
+        }
+
+        function loadTickets() {
+          var raw = null;
+          try { raw = window.localStorage.getItem(STORAGE_KEY); } catch (e) { storageOK = false; return; }
+          if (!raw) return;
+          try {
+            var data = JSON.parse(raw);
+            if (!data || !data.tickets || !Array.isArray(data.order)) return;
+            // Keep tickets at least until the event ends. Only a manual clear removes them before then.
+            data.order.forEach(function (id) {
+              var t = data.tickets[id];
+              if (t && t.id && t.name) {
+                tickets[t.id] = {
+                  id: String(t.id),
+                  name: String(t.name),
+                  phone: t.phone ? String(t.phone) : "",
+                  redeemed: !!t.redeemed,
+                  issuedAt: t.issuedAt || null,
+                  redeemedAt: t.redeemedAt || null
+                };
+                order.push(t.id);
+              }
+            });
+          } catch (e) {
+            tickets = {};
+            order = [];
+          }
+        }
+
+        var $ = function (id) { return document.getElementById(id); };
+        var els = {
+          form: $("buyForm"), name: $("buyerName"), phone: $("buyerPhone"),
+          qtyVal: $("qtyVal"), priceTotal: $("priceTotal"), formError: $("formError"),
+          issuedBox: $("issuedBox"), issuedList: $("issuedList"),
+          tilt: $("tilt"), flip: $("flip"), stage: $("stage"),
+          frontName: $("frontName"), frontId: $("frontId"), frontSig: $("frontSig"),
+          stubId: $("stubId"), backId: $("backId"), backName: $("backName"),
+          backPhone: $("backPhone"), backSig: $("backSig"),
+          qrHolder: $("qrHolder"), qrIdCap: $("qrIdCap"),
+          stampFront: $("stampFront"), stampBack: $("stampBack"),
+          meta: $("ticketMeta"), metaId: $("metaId"), metaName: $("metaName"), metaStatus: $("metaStatus"),
+          banner: $("successBanner"),
+          verifyInput: $("verifyInput"), verifyResult: $("verifyResult"),
+          scanArea: $("scanArea"), scanVideo: $("scanVideo"), scanStatus: $("scanStatus")
+        };
+
+        function fmtMMK(n) { return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " MMK"; }
+
+        function makeId() {
+          var chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+          var buf = new Uint8Array(6);
+          var id;
+          do {
+            if (window.crypto && crypto.getRandomValues) { crypto.getRandomValues(buf); }
+            else { for (var i = 0; i < 6; i++) buf[i] = Math.floor(Math.random() * 256); }
+            id = "NMA-TZF26-";
+            for (var j = 0; j < 6; j++) id += chars[buf[j] % chars.length];
+          } while (tickets[id]);
+          return id;
+        }
+
+        function qrPayload(t) {
+          return "NMA-TICKET|EVENT:" + EVENT.name + "|DATE:" + EVENT.date + "|ID:" + t.id + "|NAME:" + t.name;
+        }
+
+        function renderQR(t) {
+          els.qrHolder.innerHTML = "";
+          try {
+            var qr = qrcode(0, "M");
+            qr.addData(qrPayload(t));
+            qr.make();
+            els.qrHolder.innerHTML = qr.createSvgTag({ cellSize: 6, margin: 0, scalable: true });
+          } catch (e) {
+            els.qrHolder.innerHTML = '<div class="qr-placeholder">QR could not be drawn. Use Ticket ID<br>' + t.id + "</div>";
+          }
+        }
+
+        function showTicket(t) {
+          currentId = t.id;
+          els.frontName.textContent = t.name;
+          els.frontId.textContent = t.id;
+          els.frontSig.textContent = t.name;
+          els.stubId.textContent = "NO. " + t.id.replace("NMA-TZF26-", "");
+          els.backId.textContent = t.id;
+          els.backName.textContent = t.name;
+          els.backPhone.textContent = t.phone ? " · " + t.phone : "";
+          els.backSig.textContent = t.name;
+          els.qrIdCap.textContent = "NO. " + t.id;
+          renderQR(t);
+          var redeemed = t.redeemed;
+          els.stampFront.classList.toggle("show", redeemed);
+          els.stampBack.classList.toggle("show", redeemed);
+          els.meta.classList.add("show");
+          els.metaId.textContent = t.id;
+          els.metaName.textContent = t.name;
+          els.metaStatus.textContent = redeemed ? "Redeemed at the counter" : "Valid, not yet redeemed";
+          var items = els.issuedList.children;
+          for (var i = 0; i < items.length; i++) {
+            items[i].classList.toggle("active", items[i].getAttribute("data-id") === t.id);
+          }
+        }
+
+        function renderIssuedList() {
+          els.issuedList.innerHTML = "";
+          order.forEach(function (id) {
+            var t = tickets[id];
+            var b = document.createElement("button");
+            b.type = "button";
+            b.className = "issued-item" + (id === currentId ? " active" : "");
+            b.setAttribute("data-id", id);
+            b.innerHTML = '<span><span class="tid"></span><br /><span class="tname"></span></span>' +
+              '<span class="pill ' + (t.redeemed ? "pill-used" : "pill-valid") + '">' + (t.redeemed ? "REDEEMED" : "VALID") + "</span>";
+            b.querySelector(".tid").textContent = id;
+            b.querySelector(".tname").textContent = t.name;
+            b.addEventListener("click", function () { showTicket(tickets[id]); setFlip(false); });
+            els.issuedList.appendChild(b);
+          });
+          els.issuedBox.classList.toggle("show", order.length > 0);
+        }
+
+        /* ----- quantity ----- */
+        function setQty(n) {
+          qty = Math.max(1, Math.min(4, n));
+          els.qtyVal.textContent = qty;
+          els.priceTotal.textContent = fmtMMK(EVENT.price * qty);
+        }
+        $("qtyMinus").addEventListener("click", function () { setQty(qty - 1); });
+        $("qtyPlus").addEventListener("click", function () { setQty(qty + 1); });
+        setQty(1);
+
+        /* ----- issue ----- */
+        els.form.addEventListener("submit", function (ev) {
+          ev.preventDefault();
+          var name = els.name.value.trim().replace(/\s+/g, " ");
+          if (name.length < 2) {
+            els.formError.textContent = "Please enter the buyer full name. It is printed and signed on the ticket.";
+            els.formError.classList.add("show");
+            els.name.focus();
+            return;
+          }
+          els.formError.classList.remove("show");
+          var phone = els.phone.value.trim();
+          var made = [];
+          for (var i = 0; i < qty; i++) {
+            var t = { id: makeId(), name: name, phone: phone, redeemed: false, issuedAt: new Date().toISOString(), redeemedAt: null };
+            tickets[t.id] = t;
+            order.push(t.id);
+            made.push(t);
+          }
+          saveTickets();
+          renderIssuedList();
+          showTicket(made[0]);
+          setFlip(false);
+          els.banner.innerHTML = "";
+          var strong = document.createElement("strong");
+          strong.textContent = made.length === 1 ? "Ticket issued. " : made.length + " tickets issued. ";
+          els.banner.appendChild(strong);
+          els.banner.appendChild(document.createTextNode(
+            "Signed to " + name + " with unique ID " + made[0].id + (made.length > 1 ? " and the IDs listed below" : "") +
+            ". Saved on this device until the event, so you can close this tab and reopen it later. Flip the ticket to show the QR at the event counter."
+          ));
+          els.banner.classList.add("show");
+          els.stage.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+
+        /* ----- 3D tilt + flip ----- */
+        var flipped = false;
+        function setFlip(v) {
+          flipped = v;
+          els.flip.classList.toggle("flipped", flipped);
+          $("flipBtn").textContent = flipped ? "Flip to front" : "Flip to QR side";
+        }
+        $("flipBtn").addEventListener("click", function () { setFlip(!flipped); });
+        $("flipBtnTop").addEventListener("click", function () { setFlip(!flipped); });
+
+        /* ----- restore saved tickets on this device ----- */
+        loadTickets();
+        if (order.length > 0) {
+          renderIssuedList();
+          showTicket(tickets[order[order.length - 1]]);
+          setFlip(false);
+        }
+
+        /* ----- clear saved tickets (two-tap confirm, no dialog) ----- */
+        (function () {
+          var clearBtn = $("clearSavedBtn");
+          if (!clearBtn) return;
+          var armed = false, armTimer = null;
+          clearBtn.addEventListener("click", function () {
+            if (!armed) {
+              armed = true;
+              clearBtn.textContent = "Tap again to clear all saved tickets";
+              armTimer = setTimeout(function () { armed = false; clearBtn.textContent = "Clear saved tickets on this device"; }, 3500);
+              return;
+            }
+            clearTimeout(armTimer);
+            armed = false;
+            clearBtn.textContent = "Clear saved tickets on this device";
+            tickets = {};
+            order = [];
+            currentId = null;
+            try { window.localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+            renderIssuedList();
+            els.meta.classList.remove("show");
+            els.banner.classList.remove("show");
+          });
+        })();
+
+        var raf = null, targetRX = 0, targetRY = 0, curRX = 0, curRY = 0;
+        function animateTilt() {
+          curRX += (targetRX - curRX) * 0.14;
+          curRY += (targetRY - curRY) * 0.14;
+          els.tilt.style.transform = "rotateX(" + curRX.toFixed(2) + "deg) rotateY(" + curRY.toFixed(2) + "deg)";
+          if (Math.abs(targetRX - curRX) > 0.02 || Math.abs(targetRY - curRY) > 0.02) {
+            raf = requestAnimationFrame(animateTilt);
+          } else { raf = null; }
+        }
+        function kickTilt() { if (!raf) raf = requestAnimationFrame(animateTilt); }
+        function setGlare(x, y, on) {
+          els.stage.querySelectorAll(".glare").forEach(function (g) {
+            g.style.setProperty("--gx", x + "%");
+            g.style.setProperty("--gy", y + "%");
+            g.style.setProperty("--go", on ? "1" : "0");
+          });
+        }
+        els.stage.addEventListener("pointermove", function (e) {
+          var r = els.tilt.getBoundingClientRect();
+          var px = (e.clientX - r.left) / r.width;
+          var py = (e.clientY - r.top) / r.height;
+          targetRY = (px - 0.5) * 22;
+          targetRX = (0.5 - py) * 16;
+          setGlare(px * 100, py * 100, true);
+          kickTilt();
+        });
+        function resetTilt() { targetRX = 0; targetRY = 0; setGlare(50, 50, false); kickTilt(); }
+        els.stage.addEventListener("pointerleave", resetTilt);
+        els.stage.addEventListener("pointerup", function () { if (window.matchMedia("(pointer: coarse)").matches) setTimeout(resetTilt, 600); });
+
+        /* ----- copy buttons ----- */
+        function copyText(text, btn, doneLabel) {
+          function done() {
+            var old = btn.textContent;
+            btn.textContent = doneLabel;
+            setTimeout(function () { btn.textContent = old; }, 1600);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, done);
+          } else {
+            var ta = document.createElement("textarea");
+            ta.value = text; document.body.appendChild(ta); ta.select();
+            try { document.execCommand("copy"); } catch (e) {}
+            document.body.removeChild(ta); done();
+          }
+        }
+        $("copyIdBtn").addEventListener("click", function () {
+          if (!currentId) { this.textContent = "Issue a ticket first"; var b = this; setTimeout(function () { b.textContent = "Copy Ticket ID"; }, 1600); return; }
+          copyText(currentId, this, "Copied");
+        });
+        $("copyDetailsBtn").addEventListener("click", function () {
+          if (!currentId) { this.textContent = "Issue a ticket first"; var b = this; setTimeout(function () { b.textContent = "Copy ticket details"; }, 1600); return; }
+          var t = tickets[currentId];
+          copyText(
+            "TAZAUNGDAING FESTIVAL by NMA College\nTicket ID: " + t.id + "\nBuyer: " + t.name +
+            "\nDate: " + EVENT.dateLabel + ", " + EVENT.timeLabel + "\nVenue: " + EVENT.venue +
+            "\nStatus: " + (t.redeemed ? "Redeemed" : "Valid"),
+            this, "Copied"
+          );
+        });
+
+        /* ----- counter verify ----- */
+        function parseScan(text) {
+          if (!text) return null;
+          var m = /ID:([A-Z0-9-]+)/i.exec(text);
+          if (m) return m[1].toUpperCase();
+          var bare = text.trim().toUpperCase();
+          if (/^NMA-TZF26-[A-Z0-9]{6}$/.test(bare)) return bare;
+          return null;
+        }
+        function showVerify(kind, title, body) {
+          els.verifyResult.className = "verify-result show " + kind;
+          els.verifyResult.innerHTML = "";
+          var s = document.createElement("strong"); s.textContent = title;
+          els.verifyResult.appendChild(s);
+          els.verifyResult.appendChild(document.createTextNode(body));
+        }
+        function lookup(raw) {
+          var id = parseScan(raw) || raw.trim().toUpperCase();
+          return { id: id, ticket: tickets[id] || null };
+        }
+        function doCheck() {
+          var raw = els.verifyInput.value;
+          if (!raw.trim()) { showVerify("bad", "Nothing to check", "Type a Ticket ID or scan the buyer QR first."); return null; }
+          var r = lookup(raw);
+          if (!r.ticket) {
+            showVerify("bad", "Ticket not found", "No ticket with ID " + (r.id || raw.trim()) + " is saved on this device. Check the ID printed on the ticket and try again, or check on the device where the ticket was issued.");
+            return null;
+          }
+          if (r.ticket.redeemed) {
+            showVerify("bad", "Already redeemed", "Ticket " + r.ticket.id + " for " + r.ticket.name + " was already redeemed. It cannot be used again.");
+          } else {
+            showVerify("ok", "Valid ticket", "Ticket " + r.ticket.id + ", signed to " + r.ticket.name + ". It has not been redeemed yet. Tap Redeem when the holder enters.");
+          }
+          return r.ticket;
+        }
+        $("checkBtn").addEventListener("click", function () {
+          var t = doCheck();
+          if (t) showTicket(t);
+        });
+        $("redeemBtn").addEventListener("click", function () {
+          var raw = els.verifyInput.value;
+          if (!raw.trim()) { showVerify("bad", "Nothing to redeem", "Type a Ticket ID or scan the buyer QR first."); return; }
+          var r = lookup(raw);
+          if (!r.ticket) {
+            showVerify("bad", "Ticket not found", "No ticket with ID " + (r.id || raw.trim()) + " is saved on this device.");
+            return;
+          }
+          if (r.ticket.redeemed) {
+            showVerify("bad", "Already redeemed", "Ticket " + r.ticket.id + " for " + r.ticket.name + " was already redeemed. Entry is one scan per ticket.");
+            showTicket(r.ticket);
+            return;
+          }
+          r.ticket.redeemed = true;
+          r.ticket.redeemedAt = new Date().toISOString();
+          saveTickets();
+          renderIssuedList();
+          showTicket(r.ticket);
+          showVerify("ok", "Redeemed. Admit one.", "Ticket " + r.ticket.id + " for " + r.ticket.name + " is now marked redeemed and stamped on the ticket.");
+        });
+        els.verifyInput.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); doCheck(); } });
+
+        /* ----- camera scan ----- */
+        var stream = null, scanTimer = null;
+        function stopScan() {
+          if (scanTimer) { cancelAnimationFrame(scanTimer); scanTimer = null; }
+          if (stream) { stream.getTracks().forEach(function (tr) { tr.stop(); }); stream = null; }
+          els.scanArea.classList.remove("show");
+        }
+        $("stopScanBtn").addEventListener("click", stopScan);
+        $("scanBtn").addEventListener("click", function () {
+          if (typeof jsQR === "undefined") {
+            els.scanArea.classList.add("show");
+            els.scanStatus.textContent = "The QR scanner library did not load. Type the Ticket ID instead.";
+            return;
+          }
+          if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            els.scanArea.classList.add("show");
+            els.scanStatus.textContent = "Camera is not available in this browser. Type the Ticket ID instead.";
+            return;
+          }
+          els.scanArea.classList.add("show");
+          els.scanStatus.textContent = "Starting camera. Point it at the ticket QR.";
+          navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
+            .then(function (s) {
+              stream = s;
+              els.scanVideo.srcObject = s;
+              return els.scanVideo.play();
+            })
+            .then(function () {
+              var canvas = $("scanCanvas");
+              var ctx = canvas.getContext("2d", { willReadFrequently: true });
+              function tick() {
+                if (!stream) return;
+                var v = els.scanVideo;
+                if (v.readyState === v.HAVE_ENOUGH_DATA && v.videoWidth > 0) {
+                  canvas.width = v.videoWidth; canvas.height = v.videoHeight;
+                  ctx.drawImage(v, 0, 0, canvas.width, canvas.height);
+                  var img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                  var code = jsQR(img.data, img.width, img.height, { inversionAttempts: "dontInvert" });
+                  if (code && code.data) {
+                    var id = parseScan(code.data);
+                    stopScan();
+                    if (id) {
+                      els.verifyInput.value = id;
+                      var t = doCheck();
+                      if (t) showTicket(t);
+                    } else {
+                      showVerify("bad", "QR not recognised", "That QR does not carry a festival Ticket ID. Ask the holder for the ID printed on the ticket.");
+                    }
+                    document.getElementById("counter").scrollIntoView({ behavior: "smooth", block: "center" });
+                    return;
+                  }
+                }
+                scanTimer = requestAnimationFrame(tick);
+              }
+              tick();
+            })
+            .catch(function () {
+              els.scanStatus.textContent = "Camera permission was not given. Type the Ticket ID printed on the ticket instead.";
+            });
+        });
+      })();
+    </script>
+  </body>
+</html>
