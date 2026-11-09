@@ -101,6 +101,10 @@
         padding: 8px 13px; border-radius: 10px;
       }
       .fact span { color: var(--ink-faint); font-weight: 600; margin-right: 6px; }
+      .brief-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 14px; font-size: 13.5px; line-height: 1.5; }
+      .brief-links .brief-label { font-weight: 700; color: var(--ink-soft); }
+      .brief-links a { color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+      .brief-links a:hover { color: var(--accent-deep); }
 
       /* ---------- Layout ---------- */
       .layout { display: grid; grid-template-columns: 380px 1fr; gap: 26px; align-items: start; }
@@ -387,6 +391,7 @@
       <div class="topstrip">
         <div class="event-chip"><span class="dot"></span> NMA COLLEGE · PLATINUM CAMPUS · YANGON</div>
         <nav>
+          <a href="https://vincenthenry21.github.io/tazaungmone-festival/" target="_blank" rel="noopener">Event brief</a>
           <a href="#buy">Get a ticket</a>
           <a href="#counter">Event counter</a>
         </nav>
@@ -394,12 +399,20 @@
 
       <div class="hero">
         <h1>Tazaungdaing Festival <span class="warm">Digital Ticket</span></h1>
-        <p>Buy a ticket and it is issued on the spot with its own unique Ticket ID and QR code, signed in the buyer name. At the event, the counter scans the QR and the ticket is redeemed for entry.</p>
+        <p>Buy a ticket and it is issued on the spot, 1 ticket for each buyer name and phone number, with its own unique Ticket ID and QR code, signed in the buyer name. Tickets are saved on this device, and the QR can be saved as a PNG. At the event, the counter scans the QR and the ticket is redeemed for entry.</p>
         <div class="facts">
           <div class="fact"><span>DATE</span>Thu · 26 Nov 2026</div>
           <div class="fact"><span>TIME</span>10:30 AM to 1:30 PM</div>
           <div class="fact"><span>PRICE</span>10,000 MMK</div>
           <div class="fact"><span>VENUE</span>NMA College Platinum Campus</div>
+        </div>
+        <div class="brief-links">
+          <span class="brief-label">Event brief:</span>
+          <a href="https://vincenthenry21.github.io/tazaungmone-festival/" target="_blank" rel="noopener">View the full event page</a>
+          <span aria-hidden="true">·</span>
+          <a href="https://github.com/VincentHenry21/tazaungmone-festival" target="_blank" rel="noopener">Event brief on GitHub</a>
+          <span aria-hidden="true">·</span>
+          <a href="https://github.com/VincentHenry21/tazaungdaing-tickets" target="_blank" rel="noopener">This ticket app on GitHub</a>
         </div>
       </div>
 
@@ -407,7 +420,7 @@
         <!-- ===== Buy / issue ===== -->
         <section class="card card-pad" id="buy">
           <h2>Get your ticket</h2>
-          <p class="sub">Enter the buyer name exactly as it should appear on the ticket. Each ticket gets a different ID and QR, even for the same buyer.</p>
+          <p class="sub">One ticket per buyer. Enter the buyer name and phone number exactly as they should appear on the ticket. The same name and phone number cannot be issued a second ticket.</p>
           <div class="form-error" id="formError" role="alert"></div>
           <form id="buyForm" novalidate>
             <div class="field">
@@ -415,22 +428,14 @@
               <input type="text" id="buyerName" placeholder="e.g. Thit Sar" autocomplete="name" maxlength="40" />
             </div>
             <div class="field">
-              <label class="f-label" for="buyerPhone">Phone (optional, printed on ticket back)</label>
-              <input type="tel" id="buyerPhone" placeholder="09 XXX XXX XXX" autocomplete="tel" maxlength="20" />
+              <label class="f-label" for="buyerPhone">Phone number</label>
+              <input type="tel" id="buyerPhone" placeholder="09 XXX XXX XXX" autocomplete="tel" maxlength="20" inputmode="tel" />
+              <p class="form-note" style="margin-top:6px">Printed on the ticket back and used with the name to allow only 1 ticket per person.</p>
             </div>
-            <div class="field">
-              <label class="f-label">Number of tickets</label>
-              <div class="qty-row">
-                <button type="button" class="qty-btn" id="qtyMinus" aria-label="One fewer ticket">−</button>
-                <div class="qty-val" id="qtyVal">1</div>
-                <button type="button" class="qty-btn" id="qtyPlus" aria-label="One more ticket">+</button>
-                <span style="font-size:13px;color:var(--ink-faint);font-weight:600;">Max 4 per buyer</span>
-              </div>
-            </div>
-            <div class="price-line"><span>Total to pay at sale point</span><strong id="priceTotal">10,000 MMK</strong></div>
+            <div class="price-line"><span>Price · 1 ticket</span><strong>10,000 MMK</strong></div>
             <div style="height:14px"></div>
             <button type="submit" class="btn btn-primary">Issue my ticket</button>
-            <p class="form-note">Payment is taken at the Platinum Campus sale point or by KBZPay as announced by the organizers. This page issues the signed digital ticket with its ID and QR once the buyer name is confirmed. Issued tickets are saved on this device and stay here until the event, even if you close this tab.</p>
+            <p class="form-note">Payment is taken at the Platinum Campus sale point or by KBZPay as announced by the organizers. This page issues the signed digital ticket with its ID and QR once the buyer name and phone are confirmed. Issued tickets are saved on this device and stay here until the event, even if you close this tab.</p>
           </form>
 
           <div class="issued" id="issuedBox">
@@ -524,17 +529,21 @@
 
           <div class="stage-controls">
             <button type="button" class="btn btn-ghost btn-small" id="flipBtn">Flip to QR side</button>
+            <button type="button" class="btn btn-primary btn-small" id="saveQrBtn" style="width:auto">Save QR as PNG</button>
             <button type="button" class="btn btn-ghost btn-small" id="copyIdBtn">Copy Ticket ID</button>
             <button type="button" class="btn btn-ghost btn-small" id="copyDetailsBtn">Copy ticket details</button>
           </div>
+          <p class="form-note" id="qrSaveNote" style="margin-top:10px">Save QR as PNG downloads a large, scannable PNG of the current ticket QR, with the Ticket ID printed under it. The ticket itself is also saved on this device below.</p>
 
           <div class="success-banner" id="successBanner"></div>
 
           <div class="ticket-meta" id="ticketMeta">
             <div class="tm-row"><span class="k">Ticket ID</span><span class="v mono" id="metaId"></span></div>
             <div class="tm-row"><span class="k">Signed to</span><span class="v" id="metaName"></span></div>
+            <div class="tm-row"><span class="k">Phone</span><span class="v mono" id="metaPhone"></span></div>
             <div class="tm-row"><span class="k">Status</span><span class="v" id="metaStatus"></span></div>
-            <div class="tm-row"><span class="k">QR holds</span><span class="v">Ticket ID, buyer name and event, so the counter scan can check and redeem it.</span></div>
+            <div class="tm-row"><span class="k">QR holds</span><span class="v">Ticket ID, buyer name, phone and event, so the counter scan can check and redeem it.</span></div>
+            <div class="tm-row"><span class="k">Saved</span><span class="v">Saved on this device. Use Save QR as PNG above to keep the QR image in Photos or Files.</span></div>
           </div>
         </section>
       </div>
@@ -545,8 +554,8 @@
           <h2>How redemption works</h2>
           <p class="sub">One ticket, one ID, one scan. The QR and the printed ID always match.</p>
           <ol class="steps">
-            <li><span class="n"></span><div><h3>Buy and get issued</h3><p>The buyer name goes on the ticket, a unique Ticket ID is generated, and a QR code is created from that ID and name. No two tickets share an ID.</p></div></li>
-            <li><span class="n"></span><div><h3>Show the ticket at the counter</h3><p>Issued tickets are saved on this device until the event, so closing the tab does not lose them. Reopen this page on the same device, flip the ticket to the QR side, and let the counter scan it. The buyer can also read out the Ticket ID printed on both sides.</p></div></li>
+            <li><span class="n"></span><div><h3>Buy and get issued</h3><p>The buyer name and phone go on the ticket, a unique Ticket ID is generated, and a QR code is created from that ID, name and phone. Only 1 ticket is issued for each name and phone number, and no two tickets share an ID.</p></div></li>
+            <li><span class="n"></span><div><h3>Show the ticket at the counter</h3><p>Issued tickets are saved on this device until the event, so closing the tab does not lose them. Tap Save QR as PNG to also keep the QR image in Photos or Files. Reopen this page on the same device, flip the ticket to the QR side, and let the counter scan it. The buyer can also read out the Ticket ID printed on both sides.</p></div></li>
             <li><span class="n"></span><div><h3>Counter scans and redeems</h3><p>The counter checks the scan in the panel on this page. A valid ticket is marked redeemed and stamped, and a second scan of the same ticket is rejected, so one ticket admits one person, once.</p></div></li>
           </ol>
         </section>
@@ -577,7 +586,8 @@
 
       <footer>
         Tazaungdaing Festival · NMA College Platinum Campus · 10 Aung Myay Thar Si Street, Kamayut Township, Yangon<br />
-        Arranged by BBA Year-1 Batch-24 · T&amp;Cs applied. Discount or refund of ticket will not be available.
+        Arranged by BBA Year-1 Batch-24 · T&amp;Cs applied. Discount or refund of ticket will not be available.<br />
+        Event brief: <a href="https://vincenthenry21.github.io/tazaungmone-festival/" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">vincenthenry21.github.io/tazaungmone-festival</a> · <a href="https://github.com/VincentHenry21/tazaungmone-festival" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">GitHub repo</a> · Ticket repo: <a href="https://github.com/VincentHenry21/tazaungdaing-tickets" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700">github.com/VincentHenry21/tazaungdaing-tickets</a>
       </footer>
     </div>
 
@@ -600,8 +610,20 @@
         var tickets = {};        // id -> ticket record, saved on this device
         var order = [];          // ids in issue order
         var currentId = null;
-        var qty = 1;
         var storageOK = true;
+
+        function normName(n) { return String(n || "").trim().replace(/\s+/g, " ").toLowerCase(); }
+        function normPhone(p) { return String(p || "").replace(/\D/g, ""); }
+        function samePerson(aName, aPhone, bName, bPhone) {
+          return normName(aName) === normName(bName) && normPhone(aPhone) === normPhone(bPhone);
+        }
+        function findByNamePhone(name, phone) {
+          for (var i = 0; i < order.length; i++) {
+            var t = tickets[order[i]];
+            if (t && samePerson(t.name, t.phone, name, phone)) return t;
+          }
+          return null;
+        }
 
         function saveTickets() {
           try {
@@ -646,7 +668,7 @@
         var $ = function (id) { return document.getElementById(id); };
         var els = {
           form: $("buyForm"), name: $("buyerName"), phone: $("buyerPhone"),
-          qtyVal: $("qtyVal"), priceTotal: $("priceTotal"), formError: $("formError"),
+          formError: $("formError"),
           issuedBox: $("issuedBox"), issuedList: $("issuedList"),
           tilt: $("tilt"), flip: $("flip"), stage: $("stage"),
           frontName: $("frontName"), frontId: $("frontId"), frontSig: $("frontSig"),
@@ -654,7 +676,7 @@
           backPhone: $("backPhone"), backSig: $("backSig"),
           qrHolder: $("qrHolder"), qrIdCap: $("qrIdCap"),
           stampFront: $("stampFront"), stampBack: $("stampBack"),
-          meta: $("ticketMeta"), metaId: $("metaId"), metaName: $("metaName"), metaStatus: $("metaStatus"),
+          meta: $("ticketMeta"), metaId: $("metaId"), metaName: $("metaName"), metaPhone: $("metaPhone"), metaStatus: $("metaStatus"),
           banner: $("successBanner"),
           verifyInput: $("verifyInput"), verifyResult: $("verifyResult"),
           scanArea: $("scanArea"), scanVideo: $("scanVideo"), scanStatus: $("scanStatus")
@@ -676,7 +698,76 @@
         }
 
         function qrPayload(t) {
-          return "NMA-TICKET|EVENT:" + EVENT.name + "|DATE:" + EVENT.date + "|ID:" + t.id + "|NAME:" + t.name;
+          return "NMA-TICKET|EVENT:" + EVENT.name + "|DATE:" + EVENT.date + "|ID:" + t.id + "|NAME:" + t.name + "|PHONE:" + (t.phone || "");
+        }
+
+        /* Build a real scannable PNG of the QR on a canvas and download it.
+           Drawn module by module from the same data as the on-ticket QR,
+           with a white quiet zone so phone scanners read it reliably. */
+        function downloadQrPng(t, btn) {
+          var oldLabel = btn ? btn.textContent : "";
+          function restore(msg) {
+            if (!btn) return;
+            btn.textContent = msg;
+            setTimeout(function () { btn.textContent = oldLabel; }, 2200);
+          }
+          try {
+            if (typeof qrcode === "undefined") { restore("QR library not loaded"); return; }
+            var qr = qrcode(0, "M");
+            qr.addData(qrPayload(t));
+            qr.make();
+            var count = qr.getModuleCount();
+            var quiet = 4;                       // modules of white border
+            var scale = 24;                      // px per module, large for print / sharing
+            var qrPx = (count + quiet * 2) * scale;
+            var labelH = 150;
+            var canvas = document.createElement("canvas");
+            canvas.width = qrPx;
+            canvas.height = qrPx + labelH;
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#000000";
+            for (var r = 0; r < count; r++) {
+              for (var c = 0; c < count; c++) {
+                if (qr.isDark(r, c)) {
+                  ctx.fillRect((c + quiet) * scale, (r + quiet) * scale, scale, scale);
+                }
+              }
+            }
+            ctx.fillStyle = "#2b140d";
+            ctx.textAlign = "center";
+            ctx.font = "700 52px Archivo, Arial, sans-serif";
+            ctx.fillText(t.id, canvas.width / 2, qrPx + 62);
+            ctx.font = "600 38px Archivo, Arial, sans-serif";
+            ctx.fillStyle = "#6d4a3a";
+            ctx.fillText(t.name + (t.phone ? "  ·  " + t.phone : ""), canvas.width / 2, qrPx + 118);
+            var filename = "tazaungdaing-ticket-" + t.id + ".png";
+            function trigger(url) {
+              var a = document.createElement("a");
+              a.href = url;
+              a.download = filename;
+              document.body.appendChild(a);
+              a.click();
+              setTimeout(function () { document.body.removeChild(a); }, 400);
+            }
+            if (canvas.toBlob) {
+              canvas.toBlob(function (blob) {
+                if (!blob) { trigger(canvas.toDataURL("image/png")); restore("Saved as PNG"); return; }
+                var url = URL.createObjectURL(blob);
+                trigger(url);
+                setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+                restore("Saved as PNG");
+              }, "image/png");
+            } else {
+              trigger(canvas.toDataURL("image/png"));
+              restore("Saved as PNG");
+            }
+            var note = document.getElementById("qrSaveNote");
+            if (note) note.textContent = "QR PNG saved for " + t.id + ". Find it in your Downloads or Files. It scans the same as the QR on the ticket back.";
+          } catch (e) {
+            restore("Could not save PNG");
+          }
         }
 
         function renderQR(t) {
@@ -709,6 +800,7 @@
           els.meta.classList.add("show");
           els.metaId.textContent = t.id;
           els.metaName.textContent = t.name;
+          if (els.metaPhone) els.metaPhone.textContent = t.phone || "No phone saved";
           els.metaStatus.textContent = redeemed ? "Redeemed at the counter" : "Valid, not yet redeemed";
           var items = els.issuedList.children;
           for (var i = 0; i < items.length; i++) {
@@ -727,53 +819,48 @@
             b.innerHTML = '<span><span class="tid"></span><br /><span class="tname"></span></span>' +
               '<span class="pill ' + (t.redeemed ? "pill-used" : "pill-valid") + '">' + (t.redeemed ? "REDEEMED" : "VALID") + "</span>";
             b.querySelector(".tid").textContent = id;
-            b.querySelector(".tname").textContent = t.name;
+            b.querySelector(".tname").textContent = t.name + (t.phone ? " · " + t.phone : "");
             b.addEventListener("click", function () { showTicket(tickets[id]); setFlip(false); });
             els.issuedList.appendChild(b);
           });
           els.issuedBox.classList.toggle("show", order.length > 0);
         }
 
-        /* ----- quantity ----- */
-        function setQty(n) {
-          qty = Math.max(1, Math.min(4, n));
-          els.qtyVal.textContent = qty;
-          els.priceTotal.textContent = fmtMMK(EVENT.price * qty);
-        }
-        $("qtyMinus").addEventListener("click", function () { setQty(qty - 1); });
-        $("qtyPlus").addEventListener("click", function () { setQty(qty + 1); });
-        setQty(1);
-
-        /* ----- issue ----- */
+        /* ----- issue: exactly 1 ticket per name + phone number ----- */
         els.form.addEventListener("submit", function (ev) {
           ev.preventDefault();
           var name = els.name.value.trim().replace(/\s+/g, " ");
-          if (name.length < 2) {
-            els.formError.textContent = "Please enter the buyer full name. It is printed and signed on the ticket.";
+          var phone = els.phone.value.trim().replace(/\s+/g, " ");
+          function fail(msg, field) {
+            els.formError.textContent = msg;
             els.formError.classList.add("show");
-            els.name.focus();
+            if (field) field.focus();
+          }
+          if (name.length < 2) { fail("Please enter the buyer full name. It is printed and signed on the ticket.", els.name); return; }
+          if (normPhone(phone).length < 6) { fail("Please enter the buyer phone number. One ticket is issued for each name and phone number, and the phone is printed on the ticket back.", els.phone); return; }
+          var existing = findByNamePhone(name, phone);
+          if (existing) {
+            fail("This name and phone number already have a ticket: " + existing.id + ". Only 1 ticket is issued per name and phone number. That ticket is shown on the right and is already saved on this device.");
+            showTicket(existing);
+            setFlip(true);
+            els.stage.scrollIntoView({ behavior: "smooth", block: "center" });
             return;
           }
           els.formError.classList.remove("show");
-          var phone = els.phone.value.trim();
-          var made = [];
-          for (var i = 0; i < qty; i++) {
-            var t = { id: makeId(), name: name, phone: phone, redeemed: false, issuedAt: new Date().toISOString(), redeemedAt: null };
-            tickets[t.id] = t;
-            order.push(t.id);
-            made.push(t);
-          }
+          var t = { id: makeId(), name: name, phone: phone, redeemed: false, issuedAt: new Date().toISOString(), redeemedAt: null };
+          tickets[t.id] = t;
+          order.push(t.id);
           saveTickets();
           renderIssuedList();
-          showTicket(made[0]);
+          showTicket(t);
           setFlip(false);
           els.banner.innerHTML = "";
           var strong = document.createElement("strong");
-          strong.textContent = made.length === 1 ? "Ticket issued. " : made.length + " tickets issued. ";
+          strong.textContent = "Ticket issued. ";
           els.banner.appendChild(strong);
           els.banner.appendChild(document.createTextNode(
-            "Signed to " + name + " with unique ID " + made[0].id + (made.length > 1 ? " and the IDs listed below" : "") +
-            ". Saved on this device until the event, so you can close this tab and reopen it later. Flip the ticket to show the QR at the event counter."
+            "1 ticket signed to " + name + " (" + phone + ") with unique ID " + t.id +
+            ". Saved on this device until the event, so you can close this tab and reopen it later. Flip the ticket to show the QR at the event counter, or tap Save QR as PNG to keep the QR image."
           ));
           els.banner.classList.add("show");
           els.stage.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -868,6 +955,11 @@
             document.body.removeChild(ta); done();
           }
         }
+        $("saveQrBtn").addEventListener("click", function () {
+          if (!currentId || !tickets[currentId]) { this.textContent = "Issue a ticket first"; var b = this; setTimeout(function () { b.textContent = "Save QR as PNG"; }, 1600); return; }
+          setFlip(true);
+          downloadQrPng(tickets[currentId], this);
+        });
         $("copyIdBtn").addEventListener("click", function () {
           if (!currentId) { this.textContent = "Issue a ticket first"; var b = this; setTimeout(function () { b.textContent = "Copy Ticket ID"; }, 1600); return; }
           copyText(currentId, this, "Copied");
@@ -876,7 +968,7 @@
           if (!currentId) { this.textContent = "Issue a ticket first"; var b = this; setTimeout(function () { b.textContent = "Copy ticket details"; }, 1600); return; }
           var t = tickets[currentId];
           copyText(
-            "TAZAUNGDAING FESTIVAL by NMA College\nTicket ID: " + t.id + "\nBuyer: " + t.name +
+            "TAZAUNGDAING FESTIVAL by NMA College\nTicket ID: " + t.id + "\nBuyer: " + t.name + (t.phone ? "\nPhone: " + t.phone : "") +
             "\nDate: " + EVENT.dateLabel + ", " + EVENT.timeLabel + "\nVenue: " + EVENT.venue +
             "\nStatus: " + (t.redeemed ? "Redeemed" : "Valid"),
             this, "Copied"
